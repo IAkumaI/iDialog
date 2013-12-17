@@ -1,6 +1,8 @@
 html.full-height, html.full-height body {position:relative; height:100%;}
 html.full-height #page {min-height:100%;}
 
+body {background:#fafafa;}
+
 .navbar-inner {border-radius:0; -webkit-border-radius:0;}
 
 .idialog.i-am-red {color:#f00;}

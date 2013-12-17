@@ -23,15 +23,19 @@
         </div>
     </header>
 
-    <div class="container-fluid">
-        <p>
-            How to use it? Add <b>idialog</b> module to your application. For example:<br />
-            <b><i>angular.module('my-cool-app', ['idialog']);</i></b>
-        </p>
+    <div class="container">
+        <h3>How to use it?</h3>
 
         <p>
-            Want to use animations?<br />
-            <b><i>angular.module('my-cool-app', ['idialog', 'ngAnimate']);</i></b>
+
+            Add <b>idialog</b> module to your application. For example:<br />
+            <pre>angular.module('my-cool-app', ['idialog']);</pre>
+        </p>
+
+        <h3>Animations support?</h3>
+
+        <p>
+            <pre>angular.module('my-cool-app', ['idialog', 'ngAnimate']);</pre>
         </p>
 
         <p>
@@ -39,8 +43,10 @@
         </p>
 
         <p>
-            iDialog is a very simple AngularJS module to show any content in a popup window. Content can be an inline template or can be loaded from a server.
+            For example, you can see a source code of this page.
         </p>
+
+        <h3>Want to see it!</h3>
 
         <ul>
             <li>Click <a href="" idialog="idialog-1">this link</a> to see a very simple dialog window.</li>
@@ -52,12 +58,35 @@
             <li>Click <a href="" idialog="i-template.html">this link</a> to load content from a server.</li>
         </ul>
 
+        <h3>Can i use in inside JS?</h3>
+
         <p>
-            You can use idialog inside angular controllers and directives. Include <b>$idialog</b> service to your controller or directive and use it:<br />
-            <a href="" idialog="idialog-3"><b>$idialog('idialog-3');</b></a>
+            You can use idialog inside angular directives. Include <b>$idialog</b> service to your directive and use it:<br />
+            <pre>angular.module('my-cool-app', ['idialog'])
+    .directive('example', ['$idialog', function($idialog) {
+        return {
+            restrict: 'A',
+            link: function() {
+                $idialog('idialog-3');
+            }
+        }
+    }]);
+            </pre>
         </p>
+
         <p>
             You can pass options to dialog window. Now it's <b>class</b> only, that add any class name to window tag.
+        </p>
+
+        <h3>How to change default window template?</h3>
+
+        <p>
+            In your module put the template into a $templateCache. Example:<br />
+            <pre>angular.module('my-cool-app', ['idialog'])
+    .run(['$templateCache', 'idialogWindowTpl', function($templateCache, idialogWindowTpl) {
+        $templateCache
+        .put(idialogWindowTpl, YOUR_TEMPLATE_HERE);
+    }]);</pre>
         </p>
     </div>
 
