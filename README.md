@@ -2,10 +2,10 @@
 
 Module to show any content in a simple popup windows with AngularJS.
 
-It's realy simple!
-Include **/src/js/idialog.js** and **/src/css/style.css** to your page.
-Add **idialog** module to application.
-And add **idialog** attribute to any tag with a template name as value.
+It's realy simple!<br />
+Include **/src/js/idialog.js** and **/src/css/style.css** to your page.<br />
+Add **idialog** module to application.<br />
+And add **idialog** attribute to any tag with a template name as value.<br />
 Create ng-template with a content.
 
 Don't forget include AngularJS.
