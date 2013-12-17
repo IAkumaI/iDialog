@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru" ng-app="example" class="full-height">
+<head>
+    <link href="http://yandex.st/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../src/css/style.css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-animate.min.js"></script>
+    <script src="../src/js/idialog.js"></script>
+
+    <title>iDialog AngularJS Example</title>
+
+    <script>
+        angular.module('example', ['idialog', 'ngAnimate']);
+    </script>
+</head>
+
+<body>
+    <header class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <span class="brand">iDialog AngularJS Example</span>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <p>
+            How to use it? Add <b>idialog</b> module to your application. For example:<br />
+            <b><i>angular.module('my-cool-app', ['idialog']);</i></b>
+        </p>
+
+        <p>
+            Want to use animations?<br />
+            <b><i>angular.module('my-cool-app', ['idialog', 'ngAnimate']);</i></b>
+        </p>
+
+        <p>
+            Don't forget, that ngAnimate need to be connected by including a script to your page.
+        </p>
+
+        <p>
+            iDialog is a very simple AngularJS module to show any content in a popup window. Content can be an inline template or can be loaded from a server.
+        </p>
+
+        <ul>
+            <li>Click <a href="" idialog="idialog-1">this link</a> to see a very simple dialog window.</li>
+
+            <li>Windows can contains any content or angular directives. Each dialog window has an own <b>$scope</b>. <a href="" idialog="idialog-2">See an example</a>.</li>
+
+            <li>You can add an any class to iDialog. <a href="" idialog="idialog-3" idialog-class="i-am-red">Example</a>.</li>
+
+            <li>Click <a href="" idialog="i-template.html">this link</a> to load content from a server.</li>
+        </ul>
+
+        <p>
+            You can use idialog inside angular controllers and directives. Include <b>$idialog</b> service to your controller or directive and use it:<br />
+            <a href="" idialog="idialog-3"><b>$idialog('idialog-3');</b></a>
+        </p>
+        <p>
+            You can pass options to dialog window. Now it's <b>class</b> only, that add any class name to window tag.
+        </p>
+    </div>
+
+    <script type="text/ng-template" id="idialog-1">
+        Simple dialog content. This is a inline template <b>#idialog-1</b>.
+    </script>
+
+    <script type="text/ng-template" id="idialog-2">
+        <p><img src="http://placehold.it/150x150/" align="left" style="margin:0 10px 0 0;" />
+            Simple dialog content. This is a inline template <b>#idialog-2</b> that has an image tag, for example.</p>
+        <p>
+            Of course, you can <a href="" idialog="idialog-3">show another dialog</a> inside.
+        </p>
+    </script>
+
+    <script type="text/ng-template" id="idialog-3">
+        <p>Exercitationem elementum quisque, laboris sociis hendrerit nam duis eiusmod quia faucibus molestie nobis quasi! Ipsam, fugit. Accusamus aliquip mi dignissimos.</p>
+        <p>Felis hic, montes euismod nobis senectus adipisicing metus, ratione fringilla, hymenaeos massa laborum cupiditate hendrerit, praesentium voluptate convallis, ligula habitant.</p>
+        <p>Et voluptate nonummy amet animi luctus! Iure euismod, veritatis in? Molestias cubilia! Occaecat qui consequuntur! Dis nesciunt et habitasse lobortis.</p>
+    </script>
+</body>
+</html>
