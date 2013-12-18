@@ -1,26 +1,30 @@
 # iDialog AngularJS module
 
-Module to show any content in a simple popup windows with AngularJS.
+Module help you to show any content in a modal window. It's very easy to use!
 
-It's realy simple!<br />
-Include **/src/js/idialog.js** and **/src/css/style.css** to your page.<br />
-Add **idialog** module to application.<br />
-And add **idialog** attribute to any tag with a template name as value.<br />
-Create ng-template with a content.
+More examples and documentation you can found on gh-pages: [http://iakumai.github.io/iDialog](http://iakumai.github.io/iDialog)
 
-Don't forget include AngularJS.
+## Installation
 
-Example:
+### Bower
+
+```bower install idialog```
+
+### Manual
+
+```html
+<script src="/src/js/idialog.js"></script>
+<link rel="stylesheet" href="/src/css/style.css">
+```
+
+## Usage
+
+Include ```idialog``` module to your Angular application. Add ```idialog``` directive to any element in application and create a template. Example:
 
 ``` html
-<link rel="stylesheet" href="/src/css/style.css">
-<script src="/src/js/idialog.js"></script>
-...
 <a href="" idialog="tpl-name">Show dialog</a>
 ...
 <script type="text/ng-template" id="tpl-name">
     This is a dialog content.
 </script>
 ```
-
-More examples and documentation you can found on gh-pages: [http://iakumai.github.io/iDialog](http://iakumai.github.io/iDialog)
