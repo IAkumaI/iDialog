@@ -1,0 +1,26 @@
+{
+    "name": "idialog",
+    "version": "0.1.0",
+    "description": "AngularJS module to easy show pupup windows",
+    "main": [
+        "./src/js/idialog.js",
+        "./src/css/style.css"
+    ],
+    "keywords": [
+        "angular",
+        "popup",
+        "window"
+    ],
+    "authors": [
+        "Valery Ozarnichuk"
+    ],
+    "license": "MIT",
+    "homepage": "http://iakumai.github.io/iDialog/",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
