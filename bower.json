@@ -1,6 +1,6 @@
 {
     "name": "idialog",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "AngularJS module to easy show pupup windows",
     "main": [
         "./src/js/idialog.js",
@@ -22,5 +22,8 @@
         "bower_components",
         "test",
         "tests"
-    ]
+    ],
+    "dependencies": {
+        "angular":">=1.2.0"
+    }
 }
