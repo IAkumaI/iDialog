@@ -31,7 +31,7 @@ angular.module('idialog', [])
             $timeout(function() {
                 var newScope = $rootScope.$new(true);
 
-                newScope.dialogId = options.dialogId || function() {};
+                newScope.dialogId = options.dialogId || false;
 
                 $compile($dialog)(newScope);
             });
