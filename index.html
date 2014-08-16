@@ -2,66 +2,98 @@
 <html lang="ru" ng-app="example" class="full-height">
 <head>
     <link href="http://yandex.st/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/animatecss/3.2.0/animate.css"/>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="src/css/style.css">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular-animate.min.js"></script>
     <script src="src/js/idialog.js"></script>
 
     <title>iDialog AngularJS Example</title>
 
     <script>
-        angular.module('example', ['idialog', 'ngAnimate']);
+        angular.module('example', ['idialog', 'ngAnimate'])
+                .run(['$rootScope', function($rootScope) {
+                    $rootScope.$on('iDialogShow', function(e, id) {
+                        console.log('iDialogShow event with id: ' + id);
+                    });
+
+                    $rootScope.$on('iDialogHide', function(e, id) {
+                        console.log('iDialogHide event with id: ' + id);
+                    });
+                }]);
     </script>
 </head>
 
 <body>
-    <header class="navbar navbar-inverse">
-        <div class="navbar-inner">
-            <span class="brand">iDialog AngularJS Example</span>
-        </div>
-    </header>
+<header class="navbar navbar-inverse">
+    <div class="navbar-inner">
+        <span class="brand">iDialog AngularJS Example</span>
+    </div>
+</header>
 
-    <div class="container">
-        <h3>How to use it?</h3>
+<div class="container">
+    <h3>How to use it?</h3>
 
-        <p>
+    <p>
 
-            Add <b>idialog</b> module to your application. For example:<br />
-            <pre>angular.module('my-cool-app', ['idialog']);</pre>
-        </p>
+        Add <b>idialog</b> module to your application. For example:<br/>
+    <pre>angular.module('my-cool-app', ['idialog']);</pre>
+    </p>
 
-        <h3>Animations support?</h3>
+    <h3>Animations support?</h3>
 
-        <p>
-            <pre>angular.module('my-cool-app', ['idialog', 'ngAnimate']);</pre>
-        </p>
+    <p>
+        Just include angular-animation and animate.css to your page:
+    </p>
 
-        <p>
-            Don't forget, that ngAnimate need to be connected by including a script to your page.
-        </p>
+    <p>
+    <pre>&lt;link rel=&quot;stylesheet&quot; href=&quot;//cdn.jsdelivr.net/animatecss/3.2.0/animate.css&quot;/&gt;
+&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular-animate.min.js&quot;&gt;&lt;/script&gt;</pre>
+    </p>
 
-        <p>
-            For example, you can see a source code of this page.
-        </p>
+    <p>
+        And do not forget to add `ngAnimate` to you application:<br/>
+    <pre>angular.module('example', ['idialog', 'ngAnimate'])</pre>
+    </p>
 
-        <h3>Want to see it!</h3>
+    <p>
+        By default iDialog uses `zoomOutUp` and `zoomInUp` animations from animate.css, but you can overwrite it.
+    </p>
 
-        <ul>
-            <li>Click <a href="" idialog="idialog-1">this link</a> to see a very simple dialog window.</li>
+    <p>
+        <pre>.idialog.animated.ng-hide-add, .idialog.animated.ng-hide-remove {-webkit-animation:zoomInUp 1s; animation:zoomInUp 1s;}
+.idialog.animated.ng-hide-add {display:block !important;}
+.idialog.animated.ng-hide {-webkit-animation:zoomOutUp 1s; animation:zoomOutUp 1s;}</pre>
+    </p>
 
-            <li>Windows can contains any content or angular directives. Each dialog window has an own <b>$scope</b>. <a href="" idialog="idialog-2">See an example</a>.</li>
+    <h3>Want to see it!</h3>
 
-            <li>You can add an any class to iDialog. <a href="" idialog="idialog-3" idialog-class="i-am-red">Example</a>.</li>
+    <ul>
+        <li>Click <a href="" idialog="idialog-1">this link</a> to see a very simple dialog window.</li>
 
-            <li>Click <a href="" idialog="i-template.html">this link</a> to load content from a server.</li>
-        </ul>
+        <li>Windows can contains any content or angular directives. Each dialog window has an own <b>$scope</b>. <a
+                href="" idialog="idialog-2">See an example</a>.
+        </li>
 
-        <h3>Can i use in inside JS?</h3>
+        <li>You can add an any class to iDialog. <a href="" idialog="idialog-3" idialog-class="i-am-red">Example</a>.
+        </li>
 
-        <p>
-            You can use idialog inside angular directives. Include <b>$idialog</b> service to your directive and use it:<br />
+        <li>Click <a href="" idialog="i-template.html">this link</a> to load content from a server.</li>
+    </ul>
+
+    <h3>Since 0.2 iDialog supports events. Where is it?</h3>
+
+    <p>
+        Click <a href="" idialog="idialog-events" idialog-id="sample-id">this link</a>, please.
+    </p>
+
+    <h3>Can i use in inside JS?</h3>
+
+    <p>
+        You can use idialog inside angular directives. Include <b>$idialog</b> service to your directive and use
+        it:<br/>
             <pre>angular.module('my-cool-app', ['idialog'])
     .directive('example', ['$idialog', function($idialog) {
         return {
@@ -72,40 +104,73 @@
         }
     }]);
             </pre>
-        </p>
+    </p>
 
-        <p>
-            You can pass options to dialog window. Now it's <b>class</b> only, that add any class name to window tag.
-        </p>
+    <p>
+        Service signature:
+    </p>
 
-        <h3>How to change default window template?</h3>
+    <p>
+        <pre>$dialog(templateName, {'class':'dialog-window-css-class', dialogId:'dialog-id-for-events})</pre>
+    </p>
 
-        <p>
-            In your module put the template into a $templateCache. Example:<br />
+    <h3>How to change default window template?</h3>
+
+    <p>
+        In your module put the template into a $templateCache. Example:<br/>
             <pre>angular.module('my-cool-app', ['idialog'])
     .run(['$templateCache', 'idialogWindowTpl', function($templateCache, idialogWindowTpl) {
         $templateCache
         .put(idialogWindowTpl, YOUR_TEMPLATE_HERE);
     }]);</pre>
-        </p>
-    </div>
+    </p>
+</div>
 
-    <script type="text/ng-template" id="idialog-1">
-        Simple dialog content. This is a inline template <b>#idialog-1</b>.
-    </script>
+<script type="text/ng-template" id="idialog-1">
+    <p>Simple dialog content. This is a inline template <b>#idialog-1</b>.</p>
+</script>
 
-    <script type="text/ng-template" id="idialog-2">
-        <p><img src="http://placehold.it/150x150/" align="left" style="margin:0 10px 0 0;" />
-            Simple dialog content. This is a inline template <b>#idialog-2</b> that has an image tag, for example.</p>
-        <p>
-            Of course, you can <a href="" idialog="idialog-3">show another dialog</a> inside.
-        </p>
-    </script>
+<script type="text/ng-template" id="idialog-2">
+    <p><img src="http://placehold.it/150x150/" align="left" style="margin:0 10px 0 0;"/>
+        Simple dialog content. This is a inline template <b>#idialog-2</b> that has an image tag, for example.</p>
+    <p>
+        Of course, you can <a href="" idialog="idialog-3">show another dialog</a> inside.
+    </p>
+</script>
 
-    <script type="text/ng-template" id="idialog-3">
-        <p>Exercitationem elementum quisque, laboris sociis hendrerit nam duis eiusmod quia faucibus molestie nobis quasi! Ipsam, fugit. Accusamus aliquip mi dignissimos.</p>
-        <p>Felis hic, montes euismod nobis senectus adipisicing metus, ratione fringilla, hymenaeos massa laborum cupiditate hendrerit, praesentium voluptate convallis, ligula habitant.</p>
-        <p>Et voluptate nonummy amet animi luctus! Iure euismod, veritatis in? Molestias cubilia! Occaecat qui consequuntur! Dis nesciunt et habitasse lobortis.</p>
-    </script>
+<script type="text/ng-template" id="idialog-3">
+    <p>Exercitationem elementum quisque, laboris sociis hendrerit nam duis eiusmod quia faucibus molestie nobis quasi!
+        Ipsam, fugit. Accusamus aliquip mi dignissimos.</p>
+    <p>Felis hic, montes euismod nobis senectus adipisicing metus, ratione fringilla, hymenaeos massa laborum cupiditate
+        hendrerit, praesentium voluptate convallis, ligula habitant.</p>
+    <p>Et voluptate nonummy amet animi luctus! Iure euismod, veritatis in? Molestias cubilia! Occaecat qui consequuntur!
+        Dis nesciunt et habitasse lobortis.</p>
+</script>
+
+<script type="text/ng-template" id="idialog-events">
+    <p>
+        First, you must add ID to dialog. Like this:
+    </p>
+
+            <p>
+                <pre>&lt;a href="" idialog="idialog-1" idialog-id="sample-id">Example link&lt;/a></pre>
+            </p>
+
+    <p>
+        Next, catch events in your $scope:
+    </p>
+
+    <p>
+    <pre>$scope.$on('iDialogShow', function(e, id) {
+    console.log('iDialogShow event with id: ' + id);
+});
+
+$scope.$on('iDialogHide', function(e, id) {
+    console.log('iDialogHide event with id: ' + id);
+});</pre>
+    </p>
+
+    <p>Now open browser console (F12) and see result.</p>
+</script>
 </body>
 </html>

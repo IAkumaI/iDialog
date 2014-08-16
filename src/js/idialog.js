@@ -2,47 +2,45 @@
  * iDialog main module
  */
 angular.module('idialog', [])
-    /**
-     * Init default templates
-     */
+/**
+ * Init default templates
+ */
     .run(['$templateCache', 'idialogWindowTpl', function($templateCache, idialogWindowTpl) {
         $templateCache
-            .put(idialogWindowTpl, '<div class="idialog idialog-animation ng-hide" ng-show="visible">'
-                        + '<div class="close-btn" ng-click="hide()"></div>'
-                        + '<div class="w" ng-include="template" ng-init="startLoading()" onload="show()"></div>'
-                    + '</div>');
+            .put(idialogWindowTpl, '<div class="idialog animated ng-hide" ng-show="visible">'
+                + '<div class="close-btn" ng-click="hide()"></div>'
+                + '<div class="w" ng-include="template" ng-init="startLoading()" onload="show()"></div>'
+                + '</div>');
     }])
 
-    /**
-     * iDialog window template path
-     */
+/**
+ * iDialog window template path
+ */
     .value('idialogWindowTpl', 'idialogWindowTpl')
 
-    /**
-     * $idialog service
-     */
+/**
+ * $idialog service
+ */
     .service('$idialog', ['$compile', '$timeout', '$rootScope', function($compile, $timeout, $rootScope) {
         return function(template, options) {
-                options = options || {};
+            options = options || {};
 
-                var $dialog = angular.element('<div idialog-window="'+template+'" class="'+(options['class'] || '')+'"></div>');
-                angular.element(document.body).append($dialog);
+            var $dialog = angular.element('<div idialog-window="' + template + '" class="' + (options['class'] || '') + '"></div>');
+            angular.element(document.body).append($dialog);
 
-                $timeout(function() {
-                    var newScope = $rootScope.$new(true);
-                    newScope.onOpen = options.onOpen || function() {};
-                    newScope.beforeOpen = options.beforeOpen || function() {};
-                    newScope.onClose = options.onClose || function() {};
-                    newScope.beforeClose = options.beforeClose || function() {};
+            $timeout(function() {
+                var newScope = $rootScope.$new(true);
 
-                    $compile($dialog)(newScope);
-                });
-            };
+                newScope.dialogId = options.dialogId || function() {};
+
+                $compile($dialog)(newScope);
+            });
+        };
     }])
 
-    /**
-     * Button-directive to show dialog
-     */
+/**
+ * Button-directive to show dialog
+ */
     .directive('idialog', ['$idialog', function($idialog) {
         return {
             restrict: 'A',
@@ -57,16 +55,17 @@ angular.module('idialog', [])
                     }
 
                     $idialog(attrs.idialog, {
-                        'class': attrs.idialogClass
+                        'class': attrs.idialogClass,
+                        dialogId: attrs.idialogId
                     });
                 });
             }
         }
     }])
 
-    /**
-     * iDialog window
-     */
+/**
+ * iDialog window
+ */
     .directive('idialogWindow', ['$timeout', '$compile', 'idialogWindowTpl', function($timeout, $compile, idialogWindowTpl) {
         return {
             restrict: 'A',
@@ -79,6 +78,7 @@ angular.module('idialog', [])
                 $scope.loading = false;
                 $scope.closed = false;
                 $scope.template = attrs.idialogWindow;
+                $scope.scopeEventsEnabled = !!$scope.dialogId;
 
                 angular.element(document).on('ready', $scope.relocate);
                 angular.element(window).on('load', $scope.relocate);
@@ -86,19 +86,19 @@ angular.module('idialog', [])
 
                 $timeout($scope.relocate, 100);
 
-                $scope.$overlay = angular.element('<div class="idialog-overlay idialog-animation ng-hide" ng-show="visible || loading" ng-click="hide()"><s class="l idialog-animation ng-hide" ng-show="loading"></s></div>');
+                $scope.$overlay = angular.element('<div class="idialog-overlay ng-hide" ng-show="visible || loading" ng-click="hide()"><s class="l idialog-animation ng-hide" ng-show="loading"></s></div>');
                 angular.element(document.body).append($scope.$overlay);
                 $compile($scope.$overlay)($scope);
             },
 
-            controller: function($scope, $element) {
+            controller: ['$scope', '$element', '$rootScope', function($scope, $element, $rootScope) {
                 /**
                  * Update dialog position to center or to a window's top
                  */
                 $scope.relocate = function() {
                     if (document.body.clientHeight < $element[0].clientHeight) {
                         var doc = document.documentElement, body = document.body;
-                        var top = (doc && doc.scrollTop  || body && body.scrollTop  || 0) + 15;
+                        var top = (doc && doc.scrollTop || body && body.scrollTop || 0) + 15;
                         top = parseInt(top, 10) + 'px';
 
                         var left = document.body.clientWidth > 1000 ? -$element[0].clientWidth / 2 : -$element[0].clientWidth / 2 + 25;
@@ -134,6 +134,10 @@ angular.module('idialog', [])
                     $scope.relocate();
                     $timeout($scope.relocate);
                     $timeout($scope.relocate, 100);
+
+                    if ($scope.scopeEventsEnabled) {
+                        $rootScope.$broadcast('iDialogShow', $scope.dialogId);
+                    }
                 };
 
                 /**
@@ -146,6 +150,10 @@ angular.module('idialog', [])
                         $scope.$overlay.remove();
                         $element.remove();
                     }, 3000);
+
+                    if ($scope.scopeEventsEnabled) {
+                        $rootScope.$broadcast('iDialogHide', $scope.dialogId);
+                    }
                 };
 
                 /**
@@ -158,7 +166,7 @@ angular.module('idialog', [])
                         }
                     }, 300);
                 }
-            }
+            }]
         }
     }])
 ;
