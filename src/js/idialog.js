@@ -9,7 +9,7 @@ angular.module('idialog', [])
         $templateCache
             .put(idialogWindowTpl, '<div class="idialog animated ng-hide" ng-show="visible">'
                 + '<div class="close-btn" ng-click="hide()"></div>'
-                + '<div class="w" ng-include="template" ng-init="startLoading()" onload="show()"></div>'
+                + '<div class="w" ng-init="startLoading()"></div>'
                 + '</div>');
     }])
 
@@ -66,18 +66,17 @@ angular.module('idialog', [])
 /**
  * iDialog window
  */
-    .directive('idialogWindow', ['$timeout', '$compile', 'idialogWindowTpl', function($timeout, $compile, idialogWindowTpl) {
+    .directive('idialogWindow', ['$templateCache', '$timeout', '$compile', '$http', 'idialogWindowTpl', function($templateCache, $timeout, $compile, $http, idialogWindowTpl) {
         return {
             restrict: 'A',
             scope: true,
             templateUrl: idialogWindowTpl,
             replace: true,
 
-            link: function($scope, $element, attrs) {
+            link: function($scope, $element, $attrs) {
                 $scope.visible = false;
                 $scope.loading = false;
                 $scope.closed = false;
-                $scope.template = attrs.idialogWindow;
                 $scope.scopeEventsEnabled = !!$scope.dialogId;
 
                 angular.element(document).on('ready', $scope.relocate);
@@ -89,6 +88,32 @@ angular.module('idialog', [])
                 $scope.$overlay = angular.element('<div class="idialog-overlay ng-hide" ng-show="visible || loading" ng-click="hide()"><s class="l idialog-animation ng-hide" ng-show="loading"></s></div>');
                 angular.element(document.body).append($scope.$overlay);
                 $compile($scope.$overlay)($scope);
+
+                var dialogTemplate = $attrs.idialogWindow;
+                var dialogContent = $templateCache.get(dialogTemplate);
+                var applyTemplate = function() {
+                    var $w = $element.children('.w');
+                    $w.append(dialogContent);
+                    $compile($w)($scope);
+                    $scope.show();
+                };
+
+                if (!dialogContent) {
+                    $http({
+                        method: 'GET',
+                        url: dialogTemplate
+                    }).success(function(response) {
+                        dialogContent = response;
+                        $templateCache.put(dialogTemplate, dialogContent);
+                        applyTemplate();
+                    }).error(function(response, code) {
+                        if (code > 0) {
+                            console.error('Error while loading idialog template: ' + dialogTemplate);
+                        }
+                    });
+                } else {
+                    applyTemplate();
+                }
             },
 
             controller: ['$scope', '$element', '$rootScope', function($scope, $element, $rootScope) {
